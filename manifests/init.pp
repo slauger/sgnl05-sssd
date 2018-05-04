@@ -210,12 +210,13 @@ class sssd (
         }
 
         exec { 'pam-auth-update':
-          command     => 'sleep 5 && DEBIAN_FRONTEND=noninteractive pam-auth-update && sleep 5',
+          command     => 'sleep 5 pam-auth-update && sleep 5',
           path        => '/bin:/usr/bin:/sbin:/usr/sbin',
           refreshonly => true,
           require     => Service[$sssd_service],
           tries       => 5,
           try_sleep   => 3,
+          environment => ['DEBIAN_FRONTEND=noninteractive'],
         }
       }
     }
