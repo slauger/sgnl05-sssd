@@ -210,7 +210,7 @@ class sssd (
         }
 
         exec { 'pam-auth-update':
-          command     => 'sleep 5 pam-auth-update && sleep 5',
+          command     => 'sleep 5 && pam-auth-update && sleep 5',
           path        => '/bin:/usr/bin:/sbin:/usr/sbin',
           refreshonly => true,
           require     => Service[$sssd_service],
