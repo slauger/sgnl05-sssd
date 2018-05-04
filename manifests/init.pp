@@ -195,7 +195,7 @@ class sssd (
       exec { 'authconfig-mkhomedir':
         command => $authconfig_update_cmd,
         unless  => $authconfig_check_cmd,
-        require => File['sssd.conf'],
+        require => Service[$sssd_service],
       }
     }
     'Debian': {
@@ -210,8 +210,11 @@ class sssd (
         }
 
         exec { 'pam-auth-update':
+          command     => 'DEBIAN_FRONTEND=noninteractive pam-auth-update',
           path        => '/bin:/usr/bin:/sbin:/usr/sbin',
           refreshonly => true,
+          require     => Service[$sssd_service],
+
         }
       }
     }
@@ -222,8 +225,9 @@ class sssd (
       if $mkhomedir {
 
         exec { 'pam-config -a --mkhomedir':
-          path   => '/bin:/usr/bin:/sbin:/usr/sbin',
-          unless => $pamconfig_mkhomedir_check_cmd,
+          path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+          unless  => $pamconfig_mkhomedir_check_cmd,
+          require => Service[$sssd_service],
         }
       }
 
