@@ -214,7 +214,8 @@ class sssd (
           path        => '/bin:/usr/bin:/sbin:/usr/sbin',
           refreshonly => true,
           require     => Service[$sssd_service],
-
+          tries       => 5,
+          try_sleep   => 3,
         }
       }
     }
